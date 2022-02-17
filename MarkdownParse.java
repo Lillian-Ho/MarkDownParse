@@ -13,6 +13,7 @@ public class MarkdownParse {
         int currentIndex = 0;
 
         while(currentIndex < markdown.length()) {
+            System.out.printf("%d\t%s\n", currentIndex, toReturn);
             // Flag to keep track of exclamation
             boolean flag = false;
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
@@ -27,12 +28,12 @@ public class MarkdownParse {
             int closeParen = markdown.indexOf(")", openParen);
 
             // For test case 5 (test-file3)
-            if(closeParen == -1) {
+            if(closeParen == -1 || openParen == -1 || nextCloseBracket == -1 || nextOpenBracket == -1) {
                 break;
             }
 
             // For test case 2 (bug for paren inside link)
-            if(markdown.charAt(closeParen - 1) == '(') {
+            if(closeParen != 0 && markdown.charAt(closeParen - 1) == '(') {
                 closeParen = markdown.indexOf(")", closeParen + 1);
             }
 
@@ -47,6 +48,8 @@ public class MarkdownParse {
             }
 
             currentIndex = closeParen + 1;
+            System.out.printf("%d\t%s\t%d\t%d\t%d\t%d\n", currentIndex, toReturn,
+             nextOpenBracket, nextCloseBracket, openParen, closeParen);
         }
         return toReturn;
     }
